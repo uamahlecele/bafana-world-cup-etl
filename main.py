@@ -1,4 +1,10 @@
 import requests
+import sqlite3
+
+
+connection = sqlite3.connect('bafana_bafana_wc.db')
+cursor = connection.cursor()
+
 
 # Returns results of some of the matches of the 2026 tournament
 MATCHES_2026_WC = "https://api.fifa.com/api/v3/calendar/matches"
@@ -98,5 +104,43 @@ for match in all_match_results:
         "attendance": match["Attendance"],
     })
 
+for team in all_teams:
+    clean_teams.append({
+        "id_team": team["IdTeam"],
+        "name": team["ShortClubName"],
+        "confederation": team["IdConfederation"],
+        "abbreviation": team["Abbreviation"],
+    })
+
 for m in clean_matches:
     print(m)
+
+
+# Create teams table
+cursor.execute('''CREATE TABLE teams (
+    id_team TEXT PRIMARY KEY,
+    name TEXT,
+    confederation TEXT,
+    abbreviation TEXT
+)''')
+
+# Create matches table
+cursor.execute('''CREATE TABLE matches (
+    id_match TEXT PRIMARY KEY,
+    date TEXT,
+    stage TEXT,
+    -- ... add the rest of your columns here
+)''')
+
+
+# for team in clean_teams:
+#     cursor.execute('''INSERT INTO teams VALUES (?, ?, ?, ?)''',
+#                    (team["id_team"], team["name"], team["confederation"], team["abbreviation"]))
+
+# # Insert matches (follow the same pattern for all columns)
+# for match in clean_matches:
+#     cursor.execute('''INSERT INTO matches VALUES (?, ?, ?, ...)''',
+#                    (match["id_match"], match["date"], match["stage"], ...))
+
+conn.commit()
+conn.close()
