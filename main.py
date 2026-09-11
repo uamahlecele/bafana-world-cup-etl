@@ -28,7 +28,8 @@ def extract_matches():
     """
     match_params = {
         "idCompetition": 17,
-        "idSeason": 285023
+        "idSeason": 285023,
+          "count": 200
     }
 
     all_match_results = []
@@ -96,7 +97,6 @@ def transform_teams(raw_teams):
 
 
 def transform_matches(raw_matches):
-    """Flatten raw match JSON into clean dicts with just the fields we need."""
     clean_matches = []
     for match in raw_matches:
         clean_matches.append({
