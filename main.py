@@ -29,7 +29,7 @@ def extract_matches():
     match_params = {
         "idCompetition": 17,
         "idSeason": 285023,
-          "count": 200
+        "count": 200  # This helped a lot
     }
 
     all_match_results = []
@@ -83,7 +83,7 @@ def deduplicate_matches(raw_matches):
     return deduped
 
 
-def transform_teams(raw_teams):
+def transform_teams(raw_teams, year):
     """Flatten raw team JSON into clean dicts with just the fields we need."""
     clean_teams = []
     for team in raw_teams:
@@ -92,11 +92,12 @@ def transform_teams(raw_teams):
             "name": team["ShortClubName"],
             "confederation": team["IdConfederation"],
             "abbreviation": team["Abbreviation"],
+            "year": year,
         })
     return clean_teams
 
 
-def transform_matches(raw_matches):
+def transform_matches(raw_matches, year):
     clean_matches = []
     for match in raw_matches:
         clean_matches.append({
@@ -111,6 +112,7 @@ def transform_matches(raw_matches):
             "winner_id": match["Winner"],
             "stadium": match["Stadium"]["Name"][0]["Description"],
             "attendance": match["Attendance"],
+            "year": year,
         })
     return clean_matches
 
@@ -126,11 +128,16 @@ def load_to_sqlite(clean_teams, clean_matches, db_name=DB_NAME):
     cursor.execute('DROP TABLE IF EXISTS teams')
     cursor.execute('DROP TABLE IF EXISTS matches')
 
+    # NOTE: id_team is no longer PRIMARY KEY on its own, since the same
+    # team (e.g. South Africa) will appear across multiple years/tournaments.
+    # The combination of id_team + year is what's actually unique.
     cursor.execute('''CREATE TABLE teams (
-        id_team TEXT PRIMARY KEY,
+        id_team TEXT,
         name TEXT,
         confederation TEXT,
-        abbreviation TEXT
+        abbreviation TEXT,
+        year INTEGER,
+        PRIMARY KEY (id_team, year)
     )''')
 
     cursor.execute('''CREATE TABLE matches (
@@ -144,18 +151,21 @@ def load_to_sqlite(clean_teams, clean_matches, db_name=DB_NAME):
         away_score INTEGER,
         winner_id TEXT,
         stadium TEXT,
-        attendance INTEGER
+        attendance INTEGER,
+        year INTEGER
     )''')
 
     for team in clean_teams:
-        cursor.execute('''INSERT INTO teams VALUES (?, ?, ?, ?)''',
-                       (team["id_team"], team["name"], team["confederation"], team["abbreviation"]))
+        cursor.execute('''INSERT INTO teams VALUES (?, ?, ?, ?, ?)''',
+                       (team["id_team"], team["name"], team["confederation"],
+                        team["abbreviation"], team["year"]))
 
     for match in clean_matches:
-        cursor.execute('''INSERT INTO matches VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+        cursor.execute('''INSERT INTO matches VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
                        (match["id_match"], match["date"], match["stage"], match["group_name"],
                         match["home_team_id"], match["away_team_id"], match["home_score"],
-                        match["away_score"], match["winner_id"], match["stadium"], match["attendance"]))
+                        match["away_score"], match["winner_id"], match["stadium"],
+                        match["attendance"], match["year"]))
 
     connection.commit()
     connection.close()
@@ -165,14 +175,16 @@ def load_to_sqlite(clean_teams, clean_matches, db_name=DB_NAME):
 # ORCHESTRATION — runs Extract -> Transform -> Load in order
 
 def main():
+    YEAR = 2026
+
     # EXTRACT
     raw_teams = extract_teams()
     raw_matches = extract_matches()
 
     # TRANSFORM
     deduped_matches = deduplicate_matches(raw_matches)
-    clean_teams = transform_teams(raw_teams)
-    clean_matches = transform_matches(deduped_matches)
+    clean_teams = transform_teams(raw_teams, YEAR)
+    clean_matches = transform_matches(deduped_matches, YEAR)
 
     # LOAD
     load_to_sqlite(clean_teams, clean_matches)
