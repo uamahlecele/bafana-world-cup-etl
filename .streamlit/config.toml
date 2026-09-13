@@ -1,0 +1,11 @@
+[theme]
+base = "light"
+primaryColor = "#FFC525"
+secondaryBackgroundColor = "#f8f2c4"
+textColor = "#3D3A2A"
+linkColor = "#174C"
+
+font = "Poppins"       
+codeFont = "monospace"
+baseFontSize = 14
+baseRadius = "10px"
