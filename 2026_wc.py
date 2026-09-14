@@ -37,6 +37,7 @@ def extract_matches():
     continuation_hash = None
     page_number = 1
 
+    #Pagination
     while True:
         if page_number > MAX_PAGES:
             print(f"Hit safety cap of {MAX_PAGES} pages — stopping.")
@@ -102,7 +103,7 @@ def transform_matches(raw_matches, year):
     for match in raw_matches:
         clean_matches.append({
             "id_match": match["IdMatch"],
-            "date": match["Date"],
+            "date": match["Date"].split("T")[0],  # strip time component so all years share YYYY-MM-DD format
             "stage": match["StageName"][0]["Description"],
             "group_name": match["GroupName"][0]["Description"] if match["GroupName"] else None,
             "home_team_id": match["Home"]["IdTeam"],
