@@ -7,8 +7,7 @@ the FIFA World Cup, from their debut in 1998 onwards.
 
 This is an end-to-end ETL pipeline that pulls FIFA World Cup team and match data (primarily focusing on iBafana Bafana's journey)
 from multiple sources, cleans and normalizes it into a single schema, and
-loads it into a shared SQLite database — with a Streamlit dashboard on top
-for exploring the data. 
+loads it into a shared SQLite database. Also implemented a Streamlit dashboard on top for visualizing the data. 
 
 **Tournaments covered:** 1998, 2002, 2010, 2026
 
