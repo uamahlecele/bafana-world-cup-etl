@@ -44,3 +44,6 @@ Deployed on **AWS EC2** as part of the Cloud Computing elective.
   ```bash
   streamlit run app.py --server.address 0.0.0.0 --server.port 8501 \
     --server.enableCORS=false --server.enableXsrfProtection=false
+
+
+WTC-BQT5V5VX
