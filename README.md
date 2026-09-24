@@ -33,6 +33,14 @@ Bafana Bafana's World Cup history.
 
 This project was my first time building a real ETL build end-to-end. My first time utilising streamlit which I found to be a very cool library.
 
+## Cloud Deployment
 
-WTC-BQT5V5VX
+Deployed on **AWS EC2** as part of the Cloud Computing elective.
 
+- **Region:** `<your-region>` (e.g. `eu-west-1`)
+- **Instance:** `t3.micro`, Ubuntu Server 24.04 LTS
+- **Live URL:** http://100.27.203.198:8501
+- **Run command:**
+  ```bash
+  streamlit run app.py --server.address 0.0.0.0 --server.port 8501 \
+    --server.enableCORS=false --server.enableXsrfProtection=false
