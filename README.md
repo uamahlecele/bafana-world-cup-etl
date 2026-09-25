@@ -50,4 +50,8 @@ Deployed on **AWS EC2** as part of the Cloud Computing elective.
 [Amahle Thabo Cele - Data Engineering Elective Demo](https://youtu.be/5qG6N0JH-hc)
 
 
+## Data Engineering Code
 WTC-BQT5V5VX
+
+## Cloud Computing Code
+WTC-B2FLM24P
