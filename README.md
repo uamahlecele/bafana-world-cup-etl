@@ -37,17 +37,17 @@ This project was my first time building a real ETL build end-to-end. My first ti
 
 Deployed on **AWS EC2** as part of the Cloud Computing elective.
 
-- **Region:** `<your-region>` (e.g. `eu-west-1`)
+- **Region:** `eu-east-1`
 - **Instance:** `t3.micro`, Ubuntu Server 24.04 LTS
-- **Live URL:** http://100.27.203.198:8501
-- **Run command:**
-  ```bash
-  streamlit run app.py --server.address 0.0.0.0 --server.port 8501 \
-    --server.enableCORS=false --server.enableXsrfProtection=false
+
+## Website URL
+
+[iBafana Bafana & the Fifa World Cup](http://100.27.203.198:8501) 
 
 
 ## Youtube Video Link
 
 [Amahle Thabo Cele - Data Engineering Elective Demo](https://youtu.be/5qG6N0JH-hc)
+
 
 WTC-BQT5V5VX
