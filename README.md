@@ -45,9 +45,11 @@ Deployed on **AWS EC2** as part of the Cloud Computing elective.
 [iBafana Bafana & the Fifa World Cup](http://100.27.203.198:8501) 
 
 
-## Youtube Video Link
+## Youtube Video Link(s)
 
 [Amahle Thabo Cele - Data Engineering Elective Demo](https://youtu.be/5qG6N0JH-hc)
+
+[Amahle Thabo Cele - Cloud Elective Demo](https://youtu.be/dZy45s-Idrw)
 
 
 ## Data Engineering Code
